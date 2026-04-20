@@ -1,95 +1,97 @@
-Modern e-commerce platform for IBOLA, a Gabon-inspired fashion brand.
+# IBOLA - Plateforme E-Commerce
 
-## Features
+Plateforme e-commerce moderne pour IBOLA, une marque de mode inspirée du Gabon.
 
-- ✨ Bilingual support (English & French)
-- 🛍️ Product catalog with image gallery
-- 🛒 Shopping cart with local storage
-- 💳 Checkout with multiple payment options
-- 👤 User accounts (coming soon)
-- 🎁 Loyalty points system
-- 💱 Currency conversion (EUR ↔ FCFA)
-- 📱 Fully responsive design
+## Fonctionnalités
 
-## Tech Stack
+- ✨ Support bilingue (Anglais & Français)
+- 🛍️ Catalogue de produits avec galerie d'images
+- 🛒 Panier avec stockage local
+- 💳 Commande avec plusieurs options de paiement
+- 👤 Comptes utilisateurs (bientôt disponible)
+- 🎁 Système de points de fidélité
+- 💱 Conversion de devises (EUR ↔ FCFA)
+- 📱 Design complètement responsive
+
+## Stack Technologique
 
 - **Frontend**: Next.js 14 + TypeScript + Tailwind CSS
-- **Internationalization**: next-intl
-- **Database**: Supabase PostgreSQL (setup required)
-- **Authentication**: Supabase Auth (coming soon)
-- **Payment**: PayPal integration (coming soon)
-- **Hosting**: Vercel
+- **Internationalisation**: next-intl
+- **Base de données**: Supabase PostgreSQL (configuration requise)
+- **Authentification**: Supabase Auth (bientôt disponible)
+- **Paiement**: Intégration PayPal (bientôt disponible)
+- **Hébergement**: Vercel
 
-## Getting Started
+## Démarrage Rapide
 
-### Prerequisites
+### Prérequis
 
-- Node.js 18+ 
-- npm or yarn
-- Supabase account (free tier available)
+- Node.js 18+
+- npm ou yarn
+- Compte Supabase (tier gratuit disponible)
 
 ### Installation
 
-1. **Install dependencies**
+1. **Installer les dépendances**
    ```bash
    npm install
    ```
 
-2. **Configure environment variables**
+2. **Configurer les variables d'environnement**
    
-   Create a Supabase account and project:
-   - Go to [supabase.com](https://supabase.com)
-   - Create a new project
-   - Copy your Project URL and Anon Key
+   Créer un compte Supabase et un projet:
+   - Aller sur [supabase.com](https://supabase.com)
+   - Créer un nouveau projet
+   - Copier votre URL de Projet et votre Clé Anon
    
-   Update `.env.local`:
+   Mettre à jour `.env.local`:
    ```
-   NEXT_PUBLIC_SUPABASE_URL=your-project-url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   NEXT_PUBLIC_SUPABASE_URL=votre-url-projet
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=votre-cle-anon
    ```
 
-3. **Run development server**
+3. **Lancer le serveur de développement**
    ```bash
    npm run dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+   Ouvrir [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 
-## Project Structure
+## Structure du Projet
 
 ```
-├── app/                      # Next.js app directory
-│   ├── [locale]/            # Localized routes (en, fr)
-│   │   ├── page.tsx         # Home page
-│   │   ├── products/        # Products listing & detail
-│   │   ├── cart/            # Shopping cart
-│   │   ├── checkout/        # Checkout flow
-│   │   ├── account/         # User account (coming soon)
-│   │   ├── about/           # About page
-│   │   └── order/           # Order confirmation
-│   └── layout.tsx           # Root layout
-├── components/              # Reusable React components
-├── hooks/                   # Custom React hooks
-├── lib/                     # Utility functions & constants
-├── types/                   # TypeScript type definitions
-├── messages/                # i18n translation files
-├── public/                  # Static assets (images, etc.)
-└── i18n/                    # i18n configuration
+├── app/                      # Répertoire app Next.js
+│   ├── [locale]/            # Routes localisées (en, fr)
+│   │   ├── page.tsx         # Page d'accueil
+│   │   ├── products/        # Liste et détail des produits
+│   │   ├── cart/            # Panier d'achat
+│   │   ├── checkout/        # Flux de commande
+│   │   ├── account/         # Compte utilisateur (bientôt)
+│   │   ├── about/           # Page À propos
+│   │   └── order/           # Confirmation de commande
+│   └── layout.tsx           # Layout racine
+├── components/              # Composants React réutilisables
+├── hooks/                   # Hooks React personnalisés
+├── lib/                     # Fonctions utilitaires et constantes
+├── types/                   # Définitions de types TypeScript
+├── messages/                # Fichiers de traduction i18n
+├── public/                  # Ressources statiques (images, etc.)
+└── i18n/                    # Configuration i18n
 ```
 
-## Configuration & Customization
+## Configuration et Personnalisation
 
-### Adding/Editing Products
+### Ajouter/Modifier les Produits
 
-Edit `lib/constants.ts` to modify products:
+Modifier `lib/constants.ts` pour modifier les produits:
 
 ```typescript
 export const PRODUCTS = [
   {
-    id: 'product-id',
-    slug: 'product-slug',
-    name_en: 'English Name',
-    name_fr: 'French Name',
+    id: 'id-produit',
+    slug: 'slug-produit',
+    name_en: 'Nom Anglais',
+    name_fr: 'Nom Français',
     color: 'yellow' | 'green',
     sizes: ['XS', 'S', 'M'],
     images: ['/images/products/image1.jpg', ...],
@@ -99,56 +101,55 @@ export const PRODUCTS = [
 ]
 ```
 
-### Editing Translations
+### Modifier les Traductions
 
-Update `messages/en.json` and `messages/fr.json` to change text content.
+Mettre à jour `messages/en.json` et `messages/fr.json` pour changer le contenu texte.
 
-### Customizing Styles
+### Personnaliser les Styles
 
-Tailwind CSS is configured in `tailwind.config.ts`. Modify colors, fonts, and theme there.
+Tailwind CSS est configuré dans `tailwind.config.ts`. Modifier les couleurs, polices et thème là-bas.
 
-### Currency Conversion
+### Conversion de Devises
 
-Default rate: 1 EUR = 655 FCFA (can be adjusted in `lib/constants.ts`):
+Taux par défaut: 1 EUR = 655 FCFA (peut être ajusté dans `lib/constants.ts`):
 
 ```typescript
 export const EUR_TO_FCFA = 655
 ```
 
-## Deployment
+## Déploiement
 
-### Deploy to Vercel
+### Déployer sur Vercel
 
-1. **Push to GitHub**
+1. **Pousser vers GitHub**
    ```bash
    git init
    git add .
-   git commit -m "Initial commit"
+   git commit -m "Commit initial"
    ```
 
-2. **Connect to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "New Project"
-   - Select your GitHub repository
-   - Add environment variables:
+2. **Connecter à Vercel**
+   - Aller sur [vercel.com](https://vercel.com)
+   - Cliquer sur "New Project"
+   - Sélectionner votre dépôt GitHub
+   - Ajouter les variables d'environnement:
      - `NEXT_PUBLIC_SUPABASE_URL`
      - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - Click "Deploy"
+   - Cliquer sur "Deploy"
 
-## Features Coming Soon
+## Fonctionnalités à Venir
 
-- User authentication & accounts
-- PayPal payment integration
-- Email order confirmations
-- Admin panel for product management
-- Order tracking
-- Loyalty points redemption
+- Authentification utilisateur et comptes
+- Intégration de paiement PayPal
+- Confirmations de commande par email
+- Panneau d'administration pour la gestion des produits
+- Suivi des commandes
+- Rachat de points de fidélité
 
 ## Support
 
-For issues or feature requests, please contact the development team.
+Pour les problèmes ou les demandes de fonctionnalités, veuillez contacter l'équipe de développement.
 
-## License
+## Licence
 
-© 2026 IBOLA. All rights reserved.
->>>>>>> 94fe646 (Initial commit - IBOLA ecommerce site)
+© 2026 IBOLA. Tous droits réservés.

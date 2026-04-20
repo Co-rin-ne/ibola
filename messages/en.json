@@ -1,0 +1,76 @@
+{
+  "header": {
+    "menu": "Menu",
+    "products": "Shop",
+    "about": "About",
+    "account": "Account"
+  },
+  "home": {
+    "title": "IBOLA - Gabon Inspired Fashion",
+    "tagline": "Discover sun, greenery and the colors of Gabon",
+    "shop": "Shop Now",
+    "explore": "Explore Collection",
+    "gabon": {
+      "title": "About Gabon",
+      "placeholder1": "Add your image here",
+      "placeholder2": "Add your image here",
+      "placeholder3": "Add your image here"
+    }
+  },
+  "products": {
+    "title": "Our Tash Collection",
+    "viewDetails": "View Details",
+    "available_sizes": "Available sizes",
+    "price": "€25.00"
+  },
+  "product": {
+    "sizes": "Select Size",
+    "color": "Color",
+    "qty": "Quantity",
+    "addToCart": "Add to Cart",
+    "convertFCFA": "Convert to FCFA",
+    "description": "Product Description"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "checkout": "Proceed to Checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shipping": "Shipping Information",
+    "payment": "Payment Method",
+    "paypal": "PayPal",
+    "cash": "Cash at Delivery",
+    "loyaltyPoints": "Loyalty Points Available",
+    "applyPoints": "Apply Points (100pts = €10)",
+    "placeOrder": "Place Order"
+  },
+  "account": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "myOrders": "My Orders",
+    "loyaltyPoints": "Loyalty Points",
+    "logout": "Logout",
+    "points": "Points"
+  },
+  "about": {
+    "title": "About IBOLA",
+    "text": "IBOLA is a fashion brand celebrating the vibrant culture and natural beauty of Gabon. Each piece is inspired by the sun-soaked beaches, lush forests, and rich colors of this beautiful African country. We create high-quality apparel that brings the spirit of Gabon to your wardrobe.",
+    "gabon_description": "Gabon is a country of incredible natural beauty, featuring pristine beaches, dense rainforests, and diverse wildlife. The country's rich culture and traditions inspire every design in the IBOLA collection."
+  },
+  "footer": {
+    "terms": "Terms of Purchase",
+    "conditions": "General Conditions",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "legal": "Legal Notice",
+    "manageCookies": "Manage Cookies",
+    "copyright": "© 2026 IBOLA. All rights reserved."
+  }
+}

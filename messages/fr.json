@@ -1,0 +1,76 @@
+{
+  "header": {
+    "menu": "Menu",
+    "products": "Boutique",
+    "about": "À propos",
+    "account": "Mon Compte"
+  },
+  "home": {
+    "title": "IBOLA - Mode Inspirée du Gabon",
+    "tagline": "Découvrez le soleil, la verdure et les couleurs du Gabon",
+    "shop": "Commencer",
+    "explore": "Découvrir la Collection",
+    "gabon": {
+      "title": "À Découvrir: Gabon",
+      "placeholder1": "Ajouter votre image",
+      "placeholder2": "Ajouter votre image",
+      "placeholder3": "Ajouter votre image"
+    }
+  },
+  "products": {
+    "title": "Nos Tashs",
+    "viewDetails": "Voir Détails",
+    "available_sizes": "Tailles disponibles",
+    "price": "25,00 €"
+  },
+  "product": {
+    "sizes": "Choisir la Taille",
+    "color": "Couleur",
+    "qty": "Quantité",
+    "addToCart": "Ajouter au Panier",
+    "convertFCFA": "Convertir en FCFA",
+    "description": "Description du Produit"
+  },
+  "cart": {
+    "title": "Panier",
+    "empty": "Votre panier est vide",
+    "subtotal": "Sous-total",
+    "total": "Total",
+    "checkout": "Passer la Commande"
+  },
+  "checkout": {
+    "title": "Commande",
+    "shipping": "Informations de Livraison",
+    "payment": "Méthode de Paiement",
+    "paypal": "PayPal",
+    "cash": "Espèces à la Livraison",
+    "loyaltyPoints": "Points de Fidélité Disponibles",
+    "applyPoints": "Utiliser les Points (100pts = 10€)",
+    "placeOrder": "Valider la Commande"
+  },
+  "account": {
+    "login": "Connexion",
+    "signup": "Créer un Compte",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "name": "Nom Complet",
+    "myOrders": "Mes Commandes",
+    "loyaltyPoints": "Points de Fidélité",
+    "logout": "Déconnexion",
+    "points": "Points"
+  },
+  "about": {
+    "title": "À Propos d'IBOLA",
+    "text": "IBOLA est une marque de mode célébrant la culture vibrante et la beauté naturelle du Gabon. Chaque pièce est inspirée par les plages ensoleillées, les forêts luxuriantes et les couleurs riches de ce merveilleux pays africain. Nous créons des vêtements de haute qualité qui apportent l'esprit du Gabon à votre garde-robe.",
+    "gabon_description": "Le Gabon est un pays d'une beauté naturelle incroyable, doté de plages vierges, de forêts tropicales denses et d'une faune diversifiée. La riche culture et les traditions du pays inspirent chaque design de la collection IBOLA."
+  },
+  "footer": {
+    "terms": "Conditions Générales d'Achat",
+    "conditions": "Conditions Générales IBOLA",
+    "privacy": "Politique de Confidentialité",
+    "cookies": "Politique de Cookies",
+    "legal": "Mentions Légales",
+    "manageCookies": "Gérer les Cookies",
+    "copyright": "© 2026 IBOLA. Tous droits réservés."
+  }
+}

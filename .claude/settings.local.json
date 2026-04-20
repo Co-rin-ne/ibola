@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(grep -E '\\\\.\\(JPG|jpeg|pdf\\)$')",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:3000/en)"
+    ]
+  }
+}

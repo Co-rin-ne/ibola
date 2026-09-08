@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { CurrencyToggle } from '@/components/CurrencyToggle'
 import { useCart } from '@/hooks/useCart'
 import { useCurrency } from '@/hooks/useCurrency'
@@ -36,9 +36,17 @@ export default function ProductPage({
     )
   }
 
-  const price = currency === 'EUR' ? 25 : convertEURtoFCFA(25)
+  const price = currency === 'EUR' ? product.price_eur : product.price_fcfa
   const name = locale === 'en' ? product.name_en : product.name_fr
   const description = locale === 'en' ? product.description_en : product.description_fr
+
+  const showPrevImage = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))
+  }
+
+  const showNextImage = () => {
+    setCurrentImageIndex((prev) => (prev === product.images.length - 1 ? 0 : prev + 1))
+  }
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -46,7 +54,7 @@ export default function ProductPage({
       return
     }
 
-    addItem(product.id, selectedSize, 25, quantity)
+    addItem(product.id, selectedSize, 32, quantity)
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
   }
@@ -56,7 +64,7 @@ export default function ProductPage({
       {/* Back Button */}
       <Link
         href={`/${locale}/products`}
-        className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 mb-8"
+        className="inline-flex items-center gap-2 text-brand-green hover:text-brand-green-dark mb-8"
       >
         <ChevronLeft className="w-5 h-5" />
         {locale === 'en' ? 'Back to Products' : 'Retour aux Produits'}
@@ -65,7 +73,7 @@ export default function ProductPage({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Images */}
         <div>
-          <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
+          <div className="relative aspect-square rounded-lg overflow-hidden mb-4">
             {product.images[currentImageIndex] && (
               <Image
                 src={product.images[currentImageIndex]}
@@ -74,26 +82,39 @@ export default function ProductPage({
                 className="object-cover"
               />
             )}
-          </div>
 
-          {/* Thumbnails */}
-          <div className="grid grid-cols-3 gap-2">
-            {product.images.map((image, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentImageIndex(idx)}
-                className={`relative aspect-square rounded-lg overflow-hidden border-2 transition ${
-                  currentImageIndex === idx ? 'border-green-600' : 'border-gray-200'
-                }`}
-              >
-                <Image
-                  src={image}
-                  alt={`${name} view ${idx + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </button>
-            ))}
+            {product.images.length > 1 && (
+              <>
+                <button
+                  onClick={showPrevImage}
+                  aria-label={locale === 'en' ? 'Previous image' : 'Image précédente'}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 hover:bg-white shadow-md transition"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={showNextImage}
+                  aria-label={locale === 'en' ? 'Next image' : 'Image suivante'}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 hover:bg-white shadow-md transition"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+
+                {/* Position dots */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                  {product.images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentImageIndex(idx)}
+                      aria-label={`${locale === 'en' ? 'Image' : 'Image'} ${idx + 1}`}
+                      className={`w-2 h-2 rounded-full transition ${
+                        currentImageIndex === idx ? 'bg-white' : 'bg-white/50'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -107,7 +128,7 @@ export default function ProductPage({
 
           {/* Price */}
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-3xl font-bold text-green-600">
+            <span className="text-3xl font-bold text-brand-green">
               {formatPrice(price, currency)}
             </span>
             <CurrencyToggle />
@@ -125,8 +146,8 @@ export default function ProductPage({
                   onClick={() => setSelectedSize(size)}
                   className={`px-6 py-2 rounded-lg font-semibold border-2 transition ${
                     selectedSize === size
-                      ? 'bg-green-600 text-white border-green-600'
-                      : 'border-gray-300 text-gray-700 hover:border-green-600'
+                      ? 'bg-brand-green text-white border-brand-green'
+                      : 'border-gray-300 text-gray-700 hover:border-brand-green'
                   }`}
                 >
                   {size}
@@ -164,8 +185,8 @@ export default function ProductPage({
             onClick={handleAddToCart}
             className={`w-full py-3 rounded-lg font-bold text-white text-lg transition ${
               added
-                ? 'bg-green-700'
-                : 'bg-green-600 hover:bg-green-700'
+                ? 'bg-brand-green-dark'
+                : 'bg-brand-green hover:bg-brand-green-dark'
             }`}
           >
             {added ? (locale === 'en' ? '✓ Added to Cart' : '✓ Ajouté au Panier') : t('product.addToCart')}

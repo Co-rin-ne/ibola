@@ -17,6 +17,16 @@ const config: Config = {
           yellow: '#FFCD00',
           green: '#007A5E',
         },
+        brand: {
+          // Vert, jaune, bleu = couleurs officielles du drapeau gabonais.
+          green: '#009E60',
+          'green-dark': '#00784A',
+          yellow: '#FCD116',
+          blue: '#3A75C4',
+          // Rouge-orangé de l'héliconia (fleur du perroquet) et du badamier.
+          heliconia: '#E8471E',
+          cream: '#F2F2E4',
+        },
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],

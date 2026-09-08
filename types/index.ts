@@ -5,6 +5,7 @@ export interface Product {
   description_en: string
   description_fr: string
   price_eur: number
+  price_fcfa: number
   color: 'yellow' | 'green'
   sizes: string[]
   images: string[]
@@ -17,6 +18,7 @@ export interface CartItem {
   size: string
   quantity: number
   price_eur: number
+  price_fcfa: number
 }
 
 export interface Cart {

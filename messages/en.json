@@ -43,7 +43,6 @@
     "shipping": "Shipping Information",
     "payment": "Payment Method",
     "paypal": "PayPal",
-    "cash": "Cash at Delivery",
     "loyaltyPoints": "Loyalty Points Available",
     "applyPoints": "Apply Points (100pts = €10)",
     "placeOrder": "Place Order"
@@ -61,7 +60,7 @@
   },
   "about": {
     "title": "About IBOLA",
-    "text": "IBOLA is a fashion brand celebrating the vibrant culture and natural beauty of Gabon. Each piece is inspired by the sun-soaked beaches, lush forests, and rich colors of this beautiful African country. We create high-quality apparel that brings the spirit of Gabon to your wardrobe.",
+    "text": "IBOLA is for beautiful Gabonese women who embody sun, colors, and beauty. Each piece celebrates your natural style and vibes. Wear Gabon with pride. We create quality, sustainable pieces that tell your story. Join the movement — be Gabon's pride, everywhere you go.",
     "gabon_description": "Gabon is a country of incredible natural beauty, featuring pristine beaches, dense rainforests, and diverse wildlife. The country's rich culture and traditions inspire every design in the IBOLA collection."
   },
   "footer": {

@@ -1,11 +1,10 @@
 export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
-import '@/globals.css'
+import { Providers } from '@/components/Providers'
 
 export const metadata: Metadata = {
   title: 'IBOLA - Gabon Inspired Fashion',
@@ -31,16 +30,12 @@ export default async function LocalizedLayout({
   }
 
   return (
-    <html lang={locale}>
-      <body className="flex flex-col min-h-screen">
-        <NextIntlClientProvider messages={messages} locale={locale}>
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <Providers messages={messages} locale={locale}>
+      <Header />
+      <main className="flex-1">
+        {children}
+      </main>
+      <Footer />
+    </Providers>
   )
 }

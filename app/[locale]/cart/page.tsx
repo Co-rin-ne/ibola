@@ -29,7 +29,7 @@ export default function CartPage({ params: { locale } }: { params: { locale: str
         <p className="text-xl text-gray-600 mb-6">{t('cart.empty')}</p>
         <Link
           href={`/${locale}/products`}
-          className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          className="inline-block px-6 py-3 bg-brand-green text-white rounded-lg hover:bg-brand-green-dark"
         >
           {t('home.shop')}
         </Link>
@@ -57,7 +57,7 @@ export default function CartPage({ params: { locale } }: { params: { locale: str
             return (
               <div key={`${item.product_id}-${item.size}`} className="flex gap-4 bg-white p-4 rounded-lg border">
                 {/* Image */}
-                <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                <div className="relative w-24 h-24 bg-brand-cream rounded-lg overflow-hidden flex-shrink-0">
                   {product.images[0] && (
                     <Image
                       src={product.images[0]}
@@ -76,7 +76,7 @@ export default function CartPage({ params: { locale } }: { params: { locale: str
                   </div>
 
                   {/* Price */}
-                  <div className="text-lg font-bold text-green-600">
+                  <div className="text-lg font-bold text-brand-green">
                     {formatPrice(item.price_eur * item.quantity, currency)}
                   </div>
                 </div>
@@ -113,7 +113,7 @@ export default function CartPage({ params: { locale } }: { params: { locale: str
 
         {/* Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-gray-50 p-6 rounded-lg sticky top-4">
+          <div className="bg-brand-cream p-6 rounded-lg sticky top-4">
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
 
             <div className="space-y-3 mb-6 pb-6 border-b">
@@ -125,21 +125,21 @@ export default function CartPage({ params: { locale } }: { params: { locale: str
 
             <div className="flex justify-between items-center mb-6">
               <span className="text-xl font-bold">{t('cart.total')}</span>
-              <span className="text-2xl font-bold text-green-600">
+              <span className="text-2xl font-bold text-brand-green">
                 {formatPrice(totalDisplay, currency)}
               </span>
             </div>
 
             <Link
               href={`/${locale}/checkout`}
-              className="block w-full py-3 bg-green-600 text-white font-bold rounded-lg text-center hover:bg-green-700 transition"
+              className="block w-full py-3 bg-brand-green text-white font-bold rounded-lg text-center hover:bg-brand-green-dark transition"
             >
               {t('cart.checkout')}
             </Link>
 
             <Link
               href={`/${locale}/products`}
-              className="mt-3 flex items-center justify-center gap-2 text-green-600 hover:text-green-700"
+              className="mt-3 flex items-center justify-center gap-2 text-brand-green hover:text-brand-green-dark"
             >
               <ChevronLeft className="w-5 h-5" />
               {locale === 'en' ? 'Continue Shopping' : 'Continuer mes Achats'}

@@ -1,8 +1,6 @@
 export const dynamic = 'force-dynamic'
 
 import type { Metadata } from 'next'
-import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
 import '@/globals.css'
 
 export const metadata: Metadata = {
@@ -10,6 +8,9 @@ export const metadata: Metadata = {
   description: 'Discover the vibrant colors and spirit of Gabon through our fashion collection',
 }
 
+// This root layout only owns <html>/<body>. The Header, Footer, and
+// translations provider live in app/[locale]/layout.tsx so they always
+// have access to the selected language.
 export default function RootLayout({
   children,
 }: {
@@ -17,13 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
-      </body>
+      <body className="flex flex-col min-h-screen">{children}</body>
     </html>
   )
 }

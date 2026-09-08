@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCurrency } from '@/hooks/useCurrency'
-import { convertEURtoFCFA, formatPrice } from '@/lib/utils'
+import { formatPrice } from '@/lib/utils'
 import type { Product } from '@/types'
 
 interface ProductCardProps {
@@ -14,14 +14,14 @@ interface ProductCardProps {
 export function ProductCard({ product, locale }: ProductCardProps) {
   const { currency } = useCurrency()
 
-  const price = currency === 'EUR' ? product.price_eur : convertEURtoFCFA(product.price_eur)
+  const price = currency === 'EUR' ? product.price_eur : product.price_fcfa
   const name = locale === 'en' ? product.name_en : product.name_fr
 
   return (
     <Link href={`/${locale}/products/${product.id}`}>
       <div className="group cursor-pointer bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
         {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-gray-100">
+        <div className="relative aspect-square overflow-hidden bg-brand-cream">
           {product.images[0] && (
             <Image
               src={product.images[0]}
@@ -34,7 +34,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
 
         {/* Content */}
         <div className="p-4">
-          <h3 className="font-semibold text-lg mb-2 group-hover:text-green-600 transition">
+          <h3 className="font-semibold text-lg mb-2 group-hover:text-brand-green transition">
             {name}
           </h3>
 
@@ -44,7 +44,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
 
           {/* Price and Sizes */}
           <div className="flex items-center justify-between">
-            <span className="text-xl font-bold text-green-600">
+            <span className="text-xl font-bold text-brand-green">
               {formatPrice(price, currency)}
             </span>
             <span className="text-sm text-gray-500">

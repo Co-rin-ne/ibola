@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl'
 import { useCart } from '@/hooks/useCart'
 import { useCurrency } from '@/hooks/useCurrency'
 import { convertEURtoFCFA, formatPrice } from '@/lib/utils'
+import { supabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,10 +23,10 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
     address: '',
     city: '',
     zipCode: '',
-    country: 'Gabon',
+    country: 'France',
   })
 
-  const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'cash'>('cash')
+  const [paymentMethod, setPaymentMethod] = useState<'card'>('card')
   const [isProcessing, setIsProcessing] = useState(false)
 
   const totalDisplay = currency === 'EUR' ? total : convertEURtoFCFA(total)
@@ -38,7 +39,14 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.name || !formData.email || !formData.address) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.address ||
+      !formData.city ||
+      !formData.zipCode ||
+      !formData.country
+    ) {
       alert(locale === 'en' ? 'Please fill all fields' : 'Veuillez remplir tous les champs')
       return
     }
@@ -46,17 +54,77 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
     setIsProcessing(true)
 
     try {
-      // For now, create a simple order
-      const orderId = `ORDER-${Date.now()}`
+      // Save the order to Supabase so it can actually be tracked and fulfilled
+      const { data, error } = await supabase
+        .from('orders')
+        .insert({
+          customer_name: formData.name,
+          customer_email: formData.email,
+          address: formData.address,
+          city: formData.city,
+          zip_code: formData.zipCode,
+          country: formData.country,
+          items: cart,
+          total_eur: total,
+          total_fcfa: convertEURtoFCFA(total),
+          payment_method: paymentMethod,
+          status: 'pending',
+        })
+        .select('id')
+        .single()
 
-      // Clear cart and redirect
+      if (error) throw error
+
+      const orderId = data.id
+
+      // Send confirmation email
+      fetch('/api/send-confirmation-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          orderId,
+          customerName: formData.name,
+          items: cart,
+          totalEur: total,
+          totalFcfa: convertEURtoFCFA(total),
+          locale,
+        }),
+      }).catch((err) => console.error('Email send error:', err))
+
+      if (paymentMethod === 'card') {
+        // Redirect to Stripe's secure hosted checkout page.
+        // Card numbers are entered on Stripe's page and never touch this site or its database.
+        const res = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId,
+            cart,
+            locale,
+            customerEmail: formData.email,
+          }),
+        })
+
+        const { url, error: sessionError } = await res.json()
+
+        if (sessionError || !url) throw new Error(sessionError || 'No checkout URL returned')
+
+        clearCart()
+        window.location.href = url
+        return
+      }
+
+      // Cash on delivery: no payment gateway needed, go straight to confirmation
       clearCart()
-
-      // Redirect to order confirmation
       router.push(`/${locale}/order/${orderId}?email=${encodeURIComponent(formData.email)}`)
     } catch (error) {
       console.error('Checkout error:', error)
-      alert(locale === 'en' ? 'Error processing order' : 'Erreur lors du traitement')
+      alert(
+        locale === 'en'
+          ? 'Error processing order. Please check your connection and try again.'
+          : 'Erreur lors du traitement de la commande. Vérifiez votre connexion et réessayez.'
+      )
     } finally {
       setIsProcessing(false)
     }
@@ -66,7 +134,7 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
     return (
       <div className="container mx-auto py-12 text-center">
         <p className="text-xl text-gray-600 mb-6">{t('cart.empty')}</p>
-        <Link href={`/${locale}/products`} className="text-green-600 hover:text-green-700">
+        <Link href={`/${locale}/products`} className="text-brand-green hover:text-brand-green-dark">
           {t('home.shop')}
         </Link>
       </div>
@@ -92,7 +160,7 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-green focus:border-transparent"
                   required
                 />
               </div>
@@ -104,7 +172,7 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-green focus:border-transparent"
                   required
                 />
               </div>
@@ -116,7 +184,7 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-green focus:border-transparent"
                   required
                 />
               </div>
@@ -129,7 +197,8 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                    required
                   />
                 </div>
 
@@ -140,9 +209,22 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
                     name="zipCode"
                     value={formData.zipCode}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                    required
                   />
                 </div>
+              </div>
+
+              <div className="mt-4">
+                <label className="block text-sm font-semibold mb-2">{locale === 'en' ? 'Country' : 'Pays'}</label>
+                <input
+                  type="text"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                  required
+                />
               </div>
             </div>
 
@@ -150,40 +232,33 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
             <h2 className="text-xl font-bold mb-4">{t('checkout.payment')}</h2>
 
             <div className="space-y-3 mb-8">
-              <label className="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+              <label className="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-brand-cream">
                 <input
                   type="radio"
                   name="payment"
-                  value="cash"
-                  checked={paymentMethod === 'cash'}
-                  onChange={(e) => setPaymentMethod(e.target.value as 'cash' | 'paypal')}
+                  value="card"
+                  checked={paymentMethod === 'card'}
+                  onChange={(e) => setPaymentMethod(e.target.value as 'cash' | 'card')}
                   className="w-4 h-4"
                 />
                 <div>
-                  <p className="font-semibold">{t('checkout.cash')}</p>
-                  <p className="text-sm text-gray-600">{locale === 'en' ? 'Pay when order is delivered' : 'Paiement à la livraison'}</p>
+                  <p className="font-semibold">
+                    {locale === 'en' ? 'Pay by card' : 'Payer par carte'}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {locale === 'en'
+                      ? 'Secure payment via Stripe. Your card number is never stored on our site.'
+                      : 'Paiement sécurisé via Stripe. Ton numéro de carte n\'est jamais stocké sur notre site.'}
+                  </p>
                 </div>
               </label>
 
-              <label className="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 opacity-50">
-                <input
-                  type="radio"
-                  name="payment"
-                  value="paypal"
-                  disabled
-                  className="w-4 h-4"
-                />
-                <div>
-                  <p className="font-semibold">{t('checkout.paypal')}</p>
-                  <p className="text-sm text-gray-600">{locale === 'en' ? 'Coming soon' : 'Bientôt disponible'}</p>
-                </div>
-              </label>
             </div>
 
             <button
               type="submit"
               disabled={isProcessing}
-              className="w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 disabled:opacity-50 transition"
+              className="w-full py-3 bg-brand-green text-white font-bold rounded-lg hover:bg-brand-green-dark disabled:opacity-50 transition"
             >
               {isProcessing ? (locale === 'en' ? 'Processing...' : 'Traitement...') : t('checkout.placeOrder')}
             </button>
@@ -192,7 +267,7 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
 
         {/* Order Summary */}
         <div>
-          <div className="bg-gray-50 p-6 rounded-lg sticky top-4">
+          <div className="bg-brand-cream p-6 rounded-lg sticky top-4">
             <h2 className="text-xl font-bold mb-4">{locale === 'en' ? 'Order Summary' : 'Résumé Commande'}</h2>
 
             <div className="space-y-2 mb-6 pb-6 border-b">
@@ -216,7 +291,7 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
             <div className="mt-6 pt-6 border-t">
               <div className="flex justify-between items-center">
                 <span className="text-xl font-bold">{t('cart.total')}</span>
-                <span className="text-2xl font-bold text-green-600">
+                <span className="text-2xl font-bold text-brand-green">
                   {formatPrice(totalDisplay, currency)}
                 </span>
               </div>

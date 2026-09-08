@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
@@ -14,33 +15,46 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { itemCount, isLoaded } = useCart()
 
-  const isEn = pathname.startsWith('/en') || (!pathname.startsWith('/fr') && !pathname.includes('fr-'))
+  // French is the default locale and has no URL prefix (e.g. /about).
+  // English is the only locale that needs a prefix (e.g. /en/about).
+  const isEn = pathname === '/en' || pathname.startsWith('/en/')
   const locale = isEn ? 'en' : 'fr'
 
   const toggleLanguage = () => {
-    const newPath = pathname.replace(`/${locale}`, `/${isEn ? 'fr' : 'en'}`)
-    router.push(newPath || `/${isEn ? 'fr' : 'en'}`)
+    if (isEn) {
+      // Switch to French: strip the /en prefix
+      const newPath = pathname.replace(/^\/en(\/|$)/, '/')
+      router.push(newPath || '/')
+    } else {
+      // Switch to English: add the /en prefix (avoid a double slash on the homepage)
+      router.push(pathname === '/' ? '/en' : `/en${pathname}`)
+    }
   }
 
   return (
     <header className="bg-white shadow-sm">
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href={`/${locale}`} className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-green-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">IB</span>
+          <div className="relative w-20 h-20">
+            <Image
+              src="/images/logo-cropped.png"
+              alt="Ibola Vibes"
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
-          <span className="font-bold text-lg hidden sm:inline">IBOLA</span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <Link href={`/${locale}/products`} className="text-gray-700 hover:text-green-600 transition">
+          <Link href={`/${locale}/products`} className="text-gray-700 hover:text-brand-green transition">
             {t('header.products')}
           </Link>
-          <Link href={`/${locale}/about`} className="text-gray-700 hover:text-green-600 transition">
+          <Link href={`/${locale}/about`} className="text-gray-700 hover:text-brand-green transition">
             {t('header.about')}
           </Link>
-          <Link href={`/${locale}/account`} className="text-gray-700 hover:text-green-600 transition">
+          <Link href={`/${locale}/account`} className="text-gray-700 hover:text-brand-green transition">
             {t('header.account')}
           </Link>
         </div>
@@ -82,13 +96,13 @@ export function Header() {
       {isMenuOpen && (
         <div className="md:hidden border-t">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
-            <Link href={`/${locale}/products`} className="text-gray-700 hover:text-green-600 transition">
+            <Link href={`/${locale}/products`} className="text-gray-700 hover:text-brand-green transition">
               {t('header.products')}
             </Link>
-            <Link href={`/${locale}/about`} className="text-gray-700 hover:text-green-600 transition">
+            <Link href={`/${locale}/about`} className="text-gray-700 hover:text-brand-green transition">
               {t('header.about')}
             </Link>
-            <Link href={`/${locale}/account`} className="text-gray-700 hover:text-green-600 transition">
+            <Link href={`/${locale}/account`} className="text-gray-700 hover:text-brand-green transition">
               {t('header.account')}
             </Link>
           </div>

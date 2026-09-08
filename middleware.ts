@@ -1,11 +1,13 @@
 import createMiddleware from 'next-intl/middleware'
 
 export default createMiddleware({
-  locales: ['en', 'fr'],
-  defaultLocale: 'en',
+  locales: ['fr', 'en'],
+  defaultLocale: 'fr',
   localePrefix: 'as-needed',
 })
 
 export const config = {
-  matcher: ['/', '/(en|fr)/:path*'],
+  // Run on every page (so unprefixed French routes like /about resolve correctly),
+  // but skip API routes, Next.js internals, and static files.
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 }

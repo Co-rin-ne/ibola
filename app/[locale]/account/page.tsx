@@ -33,11 +33,11 @@ export default function AccountPage({ params: { locale } }: { params: { locale: 
           </p>
 
           <div className="space-y-4">
-            <button className="w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition">
+            <button className="w-full py-3 bg-brand-green text-white font-bold rounded-lg hover:bg-brand-green-dark transition">
               {t('account.login')}
             </button>
 
-            <button className="w-full py-3 border-2 border-green-600 text-green-600 font-bold rounded-lg hover:bg-green-50 transition">
+            <button className="w-full py-3 border-2 border-brand-green text-brand-green font-bold rounded-lg hover:bg-brand-cream transition">
               {t('account.signup')}
             </button>
 
@@ -49,7 +49,7 @@ export default function AccountPage({ params: { locale } }: { params: { locale: 
 
             <Link
               href={`/${locale}/products`}
-              className="block text-green-600 hover:text-green-700 font-semibold"
+              className="block text-brand-green hover:text-brand-green-dark font-semibold"
             >
               {t('home.shop')}
             </Link>
@@ -65,12 +65,12 @@ export default function AccountPage({ params: { locale } }: { params: { locale: 
         <h1 className="text-3xl font-bold mb-8">{t('account.myOrders')}</h1>
 
         <div className="grid grid-cols-2 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-yellow-400 to-green-400 p-6 rounded-lg text-white">
+          <div className="bg-gradient-to-br from-brand-yellow to-brand-heliconia p-6 rounded-lg text-white">
             <p className="text-sm opacity-90">{t('account.loyaltyPoints')}</p>
             <p className="text-3xl font-bold">{user.loyalty_points || 0}</p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-lg text-white">
+          <div className="bg-gradient-to-br from-brand-blue to-brand-green p-6 rounded-lg text-white">
             <p className="text-sm opacity-90">{locale === 'en' ? 'Member Since' : 'Membre depuis'}</p>
             <p className="text-xl font-bold">{new Date(user.created_at).getFullYear()}</p>
           </div>

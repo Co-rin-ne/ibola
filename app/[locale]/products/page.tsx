@@ -21,19 +21,22 @@ export default function ProductsPage({ params: { locale } }: { params: { locale:
       </div>
 
       {/* Products Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {PRODUCTS.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={{
-              ...product,
-              price_eur: 25,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            }}
-            locale={locale}
-          />
-        ))}
+      <div className="flex justify-center">
+        <div className="w-full max-w-sm">
+          {PRODUCTS.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={{
+                ...product,
+                price_eur: 32,
+                price_fcfa: 22.000,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              }}
+              locale={locale}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )

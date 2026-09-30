@@ -11,11 +11,11 @@ export default function AboutPage({ params: { locale } }: { params: { locale: st
   return (
     <div>
       {/* Hero */}
-      <section className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden h-64 md:h-96">
+      <section className="w-full flex justify-center py-8">
         <img
-          src="images/ban.propos4.png"
-          alt="IBOLA Banner"
-          className="w-full h-full object-contain"
+          src="images/apropos.svg"
+          alt="IBOLA About"
+          className="w-full max-w-[1920px] h-[566px] object-contain"
         />
       </section>
 

@@ -21,7 +21,7 @@
     "title": "Our Tash Collection",
     "viewDetails": "View Details",
     "available_sizes": "Available sizes",
-    "price": "€25.00"
+    "price": "€32.00"
   },
   "product": {
     "sizes": "Select Size",
@@ -61,6 +61,8 @@
   "about": {
     "title": "About IBOLA",
     "text": "IBOLA is for beautiful Gabonese women who embody sun, colors, and beauty. Each piece celebrates your natural style and vibes. Wear Gabon with pride. We create quality, sustainable pieces that tell your story. Join the movement — be Gabon's pride, everywhere you go.",
+    "text2": "Because Gabon isn't just told. It's worn. It's lived. It's represented.",
+    "text3": "For youth, by youth - Our personal touch.",
     "gabon_description": "Gabon is a country of incredible natural beauty, featuring pristine beaches, dense rainforests, and diverse wildlife. The country's rich culture and traditions inspire every design in the IBOLA collection."
   },
   "footer": {

@@ -12,11 +12,13 @@ export default function AboutPage({ params: { locale } }: { params: { locale: st
     <div>
       {/* Hero */}
       <section className="w-full flex justify-center py-8">
-        <img
-          src="images/apropos.svg"
-          alt="IBOLA About"
-          className="w-full max-w-[1920px] h-[566px] object-contain"
-        />
+        <div className="w-full aspect-[1920/566]">
+          <img
+            src="images/apropos1.svg"
+            alt="IBOLA About"
+            className="w-full h-full object-contain"
+          />
+        </div>
       </section>
 
 

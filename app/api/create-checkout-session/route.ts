@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
-import { PRODUCTS } from '@/lib/constants'
+import { PRODUCTS, SHIPPING_FEES } from '@/lib/constants'
 import type { CartItem } from '@/types'
 
 export async function POST(req: NextRequest) {
@@ -35,6 +35,18 @@ export async function POST(req: NextRequest) {
         },
         quantity: item.quantity,
       }
+    })
+
+    // Add shipping fee
+    line_items.push({
+      price_data: {
+        currency: 'eur',
+        product_data: {
+          name: locale === 'en' ? 'Shipping' : 'Frais de port',
+        },
+        unit_amount: Math.round(SHIPPING_FEES.EUR * 100),
+      },
+      quantity: 1,
     })
 
     const session = await stripe.checkout.sessions.create({

@@ -1,10 +1,7 @@
 import createMiddleware from 'next-intl/middleware'
+import { routing } from './i18n/routing'
 
-export default createMiddleware({
-  locales: ['fr', 'en'],
-  defaultLocale: 'fr',
-  localePrefix: 'as-needed',
-})
+export default createMiddleware(routing)
 
 export const config = {
   // Run on every page (so unprefixed French routes like /about resolve correctly),

@@ -24,3 +24,9 @@ export function calculateLoyaltyPoints(total_eur: number): number {
 export function applyLoyaltyPoints(loyaltyPoints: number): number {
   return Math.floor(loyaltyPoints / 100) * 10
 }
+
+export function generateOrderNumber(): string {
+  const timestamp = Date.now().toString().slice(-6)
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase()
+  return `ORD-${timestamp}${random}`
+}

@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl'
 import { useCart } from '@/hooks/useCart'
 import { useCurrency } from '@/hooks/useCurrency'
 import { convertEURtoFCFA, formatPrice } from '@/lib/utils'
-import { supabase } from '@/lib/supabase'
+import { SHIPPING_FEES } from '@/lib/constants'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,7 +29,9 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
   const [paymentMethod, setPaymentMethod] = useState<'card'>('card')
   const [isProcessing, setIsProcessing] = useState(false)
 
-  const totalDisplay = currency === 'EUR' ? total : convertEURtoFCFA(total)
+  const shippingFee = currency === 'EUR' ? SHIPPING_FEES.EUR : SHIPPING_FEES.FCFA
+  const totalWithShipping = total + shippingFee
+  const totalDisplay = currency === 'EUR' ? totalWithShipping : convertEURtoFCFA(total) + shippingFee
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -54,10 +56,11 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
     setIsProcessing(true)
 
     try {
-      // Save the order to Supabase so it can actually be tracked and fulfilled
-      const { data, error } = await supabase
-        .from('orders')
-        .insert({
+      // Save the order to Supabase via server API (avoids RLS issues)
+      const createOrderRes = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           customer_name: formData.name,
           customer_email: formData.email,
           address: formData.address,
@@ -65,32 +68,22 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
           zip_code: formData.zipCode,
           country: formData.country,
           items: cart,
-          total_eur: total,
-          total_fcfa: convertEURtoFCFA(total),
+          total_eur: totalWithShipping,
+          total_fcfa: convertEURtoFCFA(total) + SHIPPING_FEES.FCFA,
+          shipping_eur: SHIPPING_FEES.EUR,
+          shipping_fcfa: SHIPPING_FEES.FCFA,
           payment_method: paymentMethod,
           status: 'pending',
-        })
-        .select('id')
-        .single()
-
-      if (error) throw error
-
-      const orderId = data.id
-
-      // Send confirmation email
-      fetch('/api/send-confirmation-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: formData.email,
-          orderId,
-          customerName: formData.name,
-          items: cart,
-          totalEur: total,
-          totalFcfa: convertEURtoFCFA(total),
-          locale,
         }),
-      }).catch((err) => console.error('Email send error:', err))
+      })
+
+      const createOrderData = await createOrderRes.json()
+
+      if (!createOrderData.success || !createOrderData.orderId) {
+        throw new Error(createOrderData.error || 'Failed to create order')
+      }
+
+      const orderId = createOrderData.orderId
 
       if (paymentMethod === 'card') {
         // Redirect to Stripe's secure hosted checkout page.
@@ -285,6 +278,10 @@ export default function CheckoutPage({ params: { locale } }: { params: { locale:
               <div className="flex justify-between">
                 <span>{t('cart.subtotal')}</span>
                 <span className="font-semibold">{formatPrice(total, currency)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>{locale === 'en' ? 'Shipping' : 'Frais de port'}</span>
+                <span className="font-semibold">{formatPrice(shippingFee, currency)}</span>
               </div>
             </div>
 

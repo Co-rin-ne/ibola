@@ -1,6 +1,11 @@
 export const EUR_TO_FCFA = 655
 export const BASE_PRICE_EUR = 25
 
+export const SHIPPING_FEES = {
+  EUR: 5.59,
+  FCFA: 3661,
+}
+
 export const SIZES = ['XS', 'S', 'M', 'L', 'XL']
 
 export const PRODUCTS = [

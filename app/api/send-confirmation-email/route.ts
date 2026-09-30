@@ -4,7 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
   try {
-    const { email, orderId, customerName, items, totalEur, totalFcfa, locale } = await request.json()
+    const { email, orderId, customerName, items, totalEur, totalFcfa, locale, shippingEur, shippingFcfa } = await request.json()
 
     const isFr = locale === 'fr'
     const subject = isFr ? 'Confirmation de votre commande IBOLA' : 'Your IBOLA Order Confirmation'
@@ -21,6 +21,7 @@ export async function POST(request: Request) {
         <h3>Détails de la commande:</h3>
         <p><strong>Numéro de commande:</strong> ${orderId}</p>
         <p><strong>Articles:</strong><br/>${itemsList}</p>
+        ${shippingEur ? `<p><strong>Frais de port:</strong> ${shippingEur}€ (${shippingFcfa} FCFA)</p>` : ''}
         <p><strong>Total:</strong> ${totalEur}€ (${totalFcfa} FCFA)</p>
         <p>Vous recevrez bientôt votre commande. Merci d'avoir choisi IBOLA!</p>
       `
@@ -31,12 +32,13 @@ export async function POST(request: Request) {
         <h3>Order details:</h3>
         <p><strong>Order number:</strong> ${orderId}</p>
         <p><strong>Items:</strong><br/>${itemsList}</p>
+        ${shippingEur ? `<p><strong>Shipping:</strong> €${shippingEur} (${shippingFcfa} FCFA)</p>` : ''}
         <p><strong>Total:</strong> €${totalEur} (${totalFcfa} FCFA)</p>
         <p>You will receive your order soon. Thank you for choosing IBOLA!</p>
       `
 
     const response = await resend.emails.send({
-      from: 'IBOLA <noreply@resend.dev>',
+      from: 'IBOLA <onboarding@resend.dev>',
       to: email,
       subject,
       html: htmlContent,

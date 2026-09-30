@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useRouter, usePathname } from '@/i18n/navigation'
+import { useTranslations, useLocale } from 'next-intl'
 import { useState } from 'react'
 import { Menu, X, ShoppingCart } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
@@ -12,23 +12,13 @@ export function Header() {
   const t = useTranslations()
   const router = useRouter()
   const pathname = usePathname()
+  const locale = useLocale()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { itemCount, isLoaded } = useCart()
 
-  // French is the default locale and has no URL prefix (e.g. /about).
-  // English is the only locale that needs a prefix (e.g. /en/about).
-  const isEn = pathname === '/en' || pathname.startsWith('/en/')
-  const locale = isEn ? 'en' : 'fr'
-
   const toggleLanguage = () => {
-    if (isEn) {
-      // Switch to French: strip the /en prefix
-      const newPath = pathname.replace(/^\/en(\/|$)/, '/')
-      router.push(newPath || '/')
-    } else {
-      // Switch to English: add the /en prefix (avoid a double slash on the homepage)
-      router.push(pathname === '/' ? '/en' : `/en${pathname}`)
-    }
+    const newLocale = locale === 'fr' ? 'en' : 'fr'
+    router.replace(pathname, { locale: newLocale })
   }
 
   return (
@@ -66,7 +56,7 @@ export function Header() {
             onClick={toggleLanguage}
             className="px-3 py-2 text-sm font-medium rounded-lg bg-gray-100 hover:bg-gray-200 transition"
           >
-            {isEn ? 'FR' : 'EN'}
+            {locale === 'en' ? 'FR' : 'EN'}
           </button>
 
           {/* Cart */}

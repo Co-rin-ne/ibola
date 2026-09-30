@@ -11,7 +11,7 @@ export default function AboutPage({ params: { locale } }: { params: { locale: st
   return (
     <div>
       {/* Hero */}
-      <section className="w-full flex justify-center py-8">
+      <section className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-2">
         <div className="w-full aspect-[1920/566]">
           <img
             src="images/apropos1.svg"
